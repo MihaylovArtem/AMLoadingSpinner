@@ -29,6 +29,8 @@ Drag the `AMLoadingSpinner/AMLoadingSpinner` folder into your project.
 
 ## Usage
 
+Coming soon...
+
 ## License
 
 `AMLoadingSpinner` is distributed under the terms and conditions of the [MIT license](https://github.com/MihaylovArtem/AMLoadingSpinner/blob/master/LICENSE.txt). 
