@@ -29,7 +29,66 @@ Drag the `AMLoadingSpinner/AMLoadingSpinner` folder into your project.
 
 ## Usage
 
-Coming soon...
+`AMLoadingSpinner` is a singleton, which will always be shown as full-screen subview of application's key window. This spinner has no default animations, so to use it you need to have an image sequence of your animation (array of images).
+
+### Customization
+
+#### Foreground
+
+##### Required
+
+```objective-c
+[AMLoadingSpinner setAnimationImages:images]
+```
+You can pass a single-object array in this method to get static image without animation.
+
+##### Optional
+
+```objective-c
+[AMLoadingSpinner setAnimationDuration:2.0];                         //Default is 5.0 seconds
+[AMLoadingSpinner setForegroundImageViewSize:CGSizeMake(50, 50)];    // Default is (100, 100)
+```
+Note that spinner will always be shown in the middle of the screen.
+
+#### Background 
+
+You can choose the type of spinner's background view. Type of background is enum `AMLoadingSpinnerBackgroundType` and it have 4 values:
+
+```objective-c
+AMLoadingSpinnerBackgroundTypeFullScreen    // Full-screen background view                   
+AMLoadingSpinnerBackgroundTypeClear         // Background view is not shown
+AMLoadingSpinnerBackgroundTypeDefaultView   // Background view is rectangle or square
+AMLoadingSpinnerBackgroundTypeCustomView    // Custom background view
+```
+
+You can customize background view with these methods:
+
+###### Optional
+```objective-c
+
+[AMLoadingSpinner setBackgroundViewType:type];                         //Default is AMLoadingSpinnerBackgroundTypeClear
+
+//Works ONLY when for AMLoadingSpinnerBackgroundTypeCustomView type
+[AMLoadingSpinner setBackgroundView:view];
+
+//Works ONLY when for AMLoadingSpinnerBackgroundTypeDefaultView type
+[AMLoadingSpinner setBackgroundViewSize:CGSizeMake:(300, 400)];       //Default is (200, 200)
+[AMLoadingSpinner setBackgroundViewCornerRadius:30.0];                //Default is 10.0
+
+//Works ONLY when for AMLoadingSpinnerBackgroundTypeDefaultView and AMLoadingSpinnerBackgroundTypeFullScreen types
+[AMLoadingSpinner setBackgroundViewColor:[UIColor redColor]];        //Default is (255, 255, 255, 0.7)
+```
+
+### Actions
+
+To show/hide spinner, use these methods:
+
+```objective-c
+[AMLoadingSpinner show];     //Doing nothing, if spinner is showing now
+[AMLoadingSpinner dismiss];  //Doing nothing, if spinner is NOT showing now
+```
+
+Note, that user interaction with app is disabled while spinner is showing.
 
 ## License
 
