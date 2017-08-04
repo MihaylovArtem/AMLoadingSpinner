@@ -85,7 +85,7 @@ typedef enum : NSUInteger {
 /**
  * Setting default background view color
  
- * Note, that this method works ONLY when the type of spinner is AMLoadingSpinnerBackgroundTypeDefaultView
+ * Note, that this method works ONLY when the type of spinner is AMLoadingSpinnerBackgroundTypeDefaultView or AMLoadingSpinnerBackgroundTypeFullScreen
  
  * The default value is (255, 255, 255, 0.7)
  
@@ -114,11 +114,31 @@ typedef enum : NSUInteger {
 +(void) show;
 
 /**
+ * Show spinner on screen with progress (progress should between 0.0 and 1.0)
+ 
+ * Calling this method will show spinner with static image from images array, number of image equals progress, passed to method
+ 
+ * Don't forget to dismiss spinner, when the progress will be 1.0
+ 
+ * When spinner is showing, user interaction is disabled
+ 
+ * This method will do nothing, if spinner is showing now
+ */
++(void) showProgress:(CGFloat)progress;
+
+/**
  * Dismiss spinner from screen
  
  * This method will do nothing, if spinner is not showing now
  */
 +(void) dismiss;
+
+/**
+ * Dismiss spinner from screen after delay
+ 
+ * This method will do nothing, if spinner is not showing now
+ */
++(void) dismissWithDelay:(NSTimeInterval)delay;
 
 
 @end

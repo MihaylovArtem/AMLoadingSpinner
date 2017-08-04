@@ -10,6 +10,7 @@
 
 @interface AMLoadingSpinner ()
 
+@property (strong, nonatomic) NSArray *imagesArray;
 @property (strong, nonatomic) UIImageView *foregroundImageView;
 @property (strong, nonatomic) UIView *backgroundView;
 @property (nonatomic) AMLoadingSpinnerBackgroundType maskType;
@@ -29,6 +30,7 @@
         CGSize screenSize = [UIScreen mainScreen].bounds.size;
         
         [sharedInstance setFrame:[UIScreen mainScreen].bounds];
+        sharedInstance.imagesArray = [[NSArray alloc] init];
         sharedInstance.backgroundView = [[UIView alloc] initWithFrame:sharedInstance.bounds];
         [sharedInstance addSubview:sharedInstance.backgroundView];
         
@@ -81,7 +83,7 @@
         NSLog(@"Error! Animation images array is empty");
         return;
     }
-    [[AMLoadingSpinner sharedManager].foregroundImageView setAnimationImages:images];
+    [AMLoadingSpinner sharedManager].imagesArray = images;
 }
 
 +(void)setAnimationDuration:(NSTimeInterval)duration {
@@ -177,22 +179,57 @@
 
 #pragma mark - Actions
 
++(void)setIsShowing:(BOOL)isShowing {
+    [AMLoadingSpinner sharedManager].isShowing = isShowing;
+    if (isShowing) {
+        if (![[UIApplication sharedApplication].keyWindow.subviews containsObject:[AMLoadingSpinner sharedManager]]) {
+            [[UIApplication sharedApplication].keyWindow addSubview:[AMLoadingSpinner sharedManager]];
+        }
+    } else {
+        if ([[UIApplication sharedApplication].keyWindow.subviews containsObject:[AMLoadingSpinner sharedManager]]) {
+            [[AMLoadingSpinner sharedManager] removeFromSuperview];
+        }
+    }
+}
+
 +(void)show {
     if ([AMLoadingSpinner sharedManager].isShowing) {
         return;
     }
-    [AMLoadingSpinner sharedManager].isShowing = YES;
+    [AMLoadingSpinner setIsShowing:YES];
+    [[AMLoadingSpinner sharedManager].foregroundImageView setAnimationImages:[AMLoadingSpinner sharedManager].imagesArray];
     [[AMLoadingSpinner sharedManager].foregroundImageView startAnimating];
-    [[UIApplication sharedApplication].keyWindow addSubview:[AMLoadingSpinner sharedManager]];
+}
+
++(void) showProgress:(CGFloat)progress {
+    if (progress > 1.0) {
+        NSLog(@"Error! Progress cannot be more than 1.0");
+        return;
+    }
+    if (progress < 0.0) {
+        NSLog(@"Error! Progress cannot be less than 0.0");
+        return;
+    }
+    if (![AMLoadingSpinner sharedManager].isShowing) {
+        [AMLoadingSpinner setIsShowing:YES];
+    }
+    NSArray *images = [AMLoadingSpinner sharedManager].imagesArray;
+//    NSLog(@"%f", truncf(progress*images.count));
+    [[AMLoadingSpinner sharedManager].foregroundImageView setImage:[images objectAtIndex:truncf(progress*images.count)]];
 }
 
 +(void)dismiss {
     if (![AMLoadingSpinner sharedManager].isShowing) {
         return;
     }
-    [AMLoadingSpinner sharedManager].isShowing = NO;
     [[AMLoadingSpinner sharedManager].foregroundImageView stopAnimating];
-    [[AMLoadingSpinner sharedManager] removeFromSuperview];
+    [AMLoadingSpinner setIsShowing:NO];
+}
+
++(void)dismissWithDelay:(NSTimeInterval)delay {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [AMLoadingSpinner dismiss];
+    });
 }
 
 @end
