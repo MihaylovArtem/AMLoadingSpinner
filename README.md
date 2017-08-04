@@ -38,15 +38,15 @@ Drag the `AMLoadingSpinner/AMLoadingSpinner` folder into your project.
 ##### Required
 
 ```objective-c
-[AMLoadingSpinner setAnimationImages:images]
++(void) setAnimationImages:(NSArray <UIImage *>*)images;
 ```
 You can pass a single-object array in this method to get static image without animation.
 
 ##### Optional
 
 ```objective-c
-[AMLoadingSpinner setAnimationDuration:2.0];                         //Default is 5.0 seconds
-[AMLoadingSpinner setForegroundImageViewSize:CGSizeMake(50, 50)];    // Default is (100, 100)
++(void) setAnimationDuration:(NSTimeInterval)duration;   // Default is 5.0 seconds
++(void)setForegroundImageViewSize:(CGSize)size;          // Default is (100, 100)
 ```
 Note that spinner will always be shown in the middle of the screen.
 
@@ -66,26 +66,35 @@ You can customize background view with these methods:
 ###### Optional
 ```objective-c
 
-[AMLoadingSpinner setBackgroundViewType:type];                         //Default is AMLoadingSpinnerBackgroundTypeClear
++(void) setBackgroundType:(AMLoadingSpinnerBackgroundType)type;   // Default is AMLoadingSpinnerBackgroundTypeClear
 
 //Works ONLY when for AMLoadingSpinnerBackgroundTypeCustomView type
-[AMLoadingSpinner setBackgroundView:view];
++(void) setBackgroundView:(UIView *)view;
 
 //Works ONLY when for AMLoadingSpinnerBackgroundTypeDefaultView type
-[AMLoadingSpinner setBackgroundViewSize:CGSizeMake:(300, 400)];       //Default is (200, 200)
-[AMLoadingSpinner setBackgroundViewCornerRadius:30.0];                //Default is 10.0
++(void) setBackgroundViewSize:(CGSize)size;               // Default is (200, 200)
++(void) setBackgroundViewCornerRadius:(CGFloat)radius;    // Default is 10.0
 
 //Works ONLY when for AMLoadingSpinnerBackgroundTypeDefaultView and AMLoadingSpinnerBackgroundTypeFullScreen types
-[AMLoadingSpinner setBackgroundViewColor:[UIColor redColor]];        //Default is (255, 255, 255, 0.7)
++(void) setBackgroundViewColor:(UIColor *)color;       // Default is (255, 255, 255, 0.7)
 ```
 
 ### Actions
 
 To show/hide spinner, use these methods:
 
+#### Showing
+
 ```objective-c
-[AMLoadingSpinner show];     //Doing nothing, if spinner is showing now
-[AMLoadingSpinner dismiss];  //Doing nothing, if spinner is NOT showing now
++(void) show;                                
++(void) showWithProgress:(CGFloat)progress;
+```
+
+#### Dismissing
+
+```objective-c
++(void) dismiss;                                  
++(void) dismissWithDelay:(NSTimeInterval)delay;
 ```
 
 Note, that user interaction with app is disabled while spinner is showing.
