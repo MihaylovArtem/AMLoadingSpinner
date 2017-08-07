@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "AMLoadingSpinner"
-  s.version      = "0.1"
+  s.version      = "1.0"
   s.summary      = "AMLoadingSpinner is a way to show progress of your ongoing task."
   s.description  = "AMLoadingSpinner is a simple way to show animated spinner for displaying the progress of an ongoing task"
   s.license      = { :type => "MIT", :file => "LICENSE" }
